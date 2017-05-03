@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>chat room demo</title>
+    <script type="text/javascript">
+
+        document.addEventListener('plusready', function(){
+            //console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+
+        });
+
+    </script>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="jquery.min.js"></script>
+    <script src="bmobSocketIo.js"></script>
+    <script src="bmob.js"></script>
+</head>
+<body>
+<div id="text">
+    <h1>chat room demo</h1>
+    昵称<input type="text" id="name"/>
+    内容<input type="text" id="content"/>
+    <button name="发送" id="send">发送</button>
+</div>
+<div id="data"></div>
+<script type="text/javascript">
+    var Chat = Bmob.Object.extend("Chat");
+    var chat = new Chat();
+    function sendMsg(){
+
+
+        var name= $("#name").val();
+        var content = $("#content").val();
+
+        if($.trim(name)==""){
+            alert("昵称不能为空！");
+            return;
+        }
+
+        if($.trim(content)==""){
+            alert("内容不能为空！");
+            return;
+        }
+
+//        var Chat = Bmob.Object.extend("Chat");
+//        var chat = new Chat();
+        chat.set("name", $("#name").val());
+        chat.set("content", $("#content").val());
+        chat.save(null, {
+            success: function(object) {
+               // alert('添加数据成功，返回的objectId是：' + object.id)
+            },
+            error: function(model, error) {
+            }
+        });
+
+
+
+
+
+
+    }
+
+    $("#send").click(function(){
+
+        sendMsg();
+    });
+
+    //服务器
+    BmobSocketIo.initialize("342c404c07e9a8fef3b50754bddbe409");
+    Bmob.initialize("342c404c07e9a8fef3b50754bddbe409", "751bb754eb6d39ac716cfd73a0df227a");
+
+    var query = new Bmob.Query(Chat);
+    // 查询所有数据
+    query.find({
+        success: function(results) {
+            //alert("共查询到 " + results.length + " 条记录");
+            // 循环处理查询到的数据
+            for (var i = 0; i < results.length; i++) {
+                var object = results[i];
+                //alert(object.id + ' - ' + object.get('name')+ object.get('content'));
+                var content=$("#data");
+                var p = '<p><span style="color:red;">' + object.get('name')+'</span>  '+'<span style="color:green;">'+ object.createdAt+'</span>  '+ ' :<br/> '+object.get('content')+'</p><br/><br/>';
+                content.html(p+content.html());
+            }
+        },
+        error: function(error) {
+            alert("查询失败: " + error.code + " " + error.message);
+        }
+    });
+
+    //初始连接socket.io服务器后，需要监听的事件都写在这个函数内
+    BmobSocketIo.onInitListen = function() {
+        //订阅GameScore表的数据更新事件
+        BmobSocketIo.updateTable("Chat");
+    };
+
+    //监听服务器返回的更新表的数据
+    BmobSocketIo.onUpdateTable = function(tablename,data) {
+
+        if( tablename=="Chat" ) {
+            // alert(tablename);
+            var content=$("#data");
+            var p = '<p><span style="color:red;">' + data.name+'</span>  '+'<span style="color:green;">'+ data.createdAt+'</span>  '+ ' :<br/> '+data.content+'</p><br/><br/>';
+            content.html(p+content.html());
+
+        }
+    };
+
+    //通过“回车”提交聊天信息
+    $('#name').keydown(function(e) {
+        if (e.keyCode === 13) {
+            sendMsg();
+        }
+    });
+
+    //通过“回车”提交聊天信息
+    $('#content').keydown(function(e) {
+        if (e.keyCode === 13) {
+            sendMsg();
+        }
+    });
+
+
+</script>
+
+
+</body>
+</html>
