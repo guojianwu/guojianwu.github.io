@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="konva.js"></script>
+    <script src="CirleText.js"></script>
+</head>
+<style>
+    body{
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+</style>
+<body>
+<div id="container"></div>
+</body>
+<script>
+    //创建一个舞台
+    var stage=new Konva.Stage({
+        container:container,
+        width:window.innerWidth,
+        height:window.innerHeight
+    });
+
+    //中心点坐标
+    var cenX=stage.width()/2;  //在Konvas获取数据都是用方法
+    var cenY=stage.height()/2;
+
+    //创建背景层
+    var bgLayer=new Konva.Layer();
+    stage.add(bgLayer);
+    var animateLayer=new Konva.Layer();
+    stage.add(animateLayer)
+    var groupL2 = new Konva.Group({
+        x:cenX,
+        y:cenY,
+    });
+    animateLayer.add(groupL2);
+ var groupL3 = new Konva.Group({
+     x:cenX,
+     y:cenY,
+    });
+    animateLayer.add(groupL3);
+
+    //绘制背景
+    var innerRadius=252/2;
+    var outerRadius=220;
+    var innerCircle=new Konva.Circle({
+        x:cenX,
+        y:cenY,
+        radius:innerRadius,
+        stroke:'#ccc',
+        strokeWidth:4,
+        dash:[10,4]
+    })
+    bgLayer.add(innerCircle);
+    var outerCircle=new Konva.Circle({
+        x:cenX,
+        y:cenY,
+        radius:outerRadius,
+        stroke:'#ccc',
+        strokeWidth:4,
+        dash:[10,4]
+    })
+
+    bgLayer.add(outerCircle);
+
+
+    var cenCirleText=new CirleText({
+        x:cenX,
+        y:cenY,
+        innerRadius:132/2,
+        outerRadius:90,
+        innerStyle:'#525aba',
+        outerStyle:'#e1e1e1',
+        text:'WEB全栈'
+    })
+
+    cenCirleText.addToGropOrLayer(bgLayer);
+    bgLayer.draw();
+
+    var x0=innerRadius*Math.cos(-60*Math.PI/180);
+    var y0=innerRadius*Math.sin(-60*Math.PI/180);
+    var l2_html5_cirleText=new CirleText({
+        x:x0,
+        y:y0,
+        innerRadius:30,
+        outerRadius:40,
+        innerStyle:'#cbdfea',
+        outerStyle:'#e1e1e1',
+        text:'HTML'
+    });
+    l2_html5_cirleText.addToGropOrLayer(groupL2)
+
+    var x1=innerRadius*Math.cos(120*Math.PI/180);
+    var y1=innerRadius*Math.sin(120*Math.PI/180);
+    var l2_CSS3_cirleText=new CirleText({
+        x:x1,
+        y:y1,
+        innerRadius:30,
+        outerRadius:40,
+        innerStyle:'orange',
+        outerStyle:'#e1e1e1',
+        text:'CSS3'
+    })
+    l2_CSS3_cirleText.addToGropOrLayer(groupL2)
+
+    var x2=outerRadius*Math.cos(-150*Math.PI/180);
+    var y2=outerRadius*Math.sin(-150*Math.PI/180);
+    var l3_node_cirleText=new CirleText({
+        x:x2,
+        y:y2,
+        innerRadius:30,
+        outerRadius:40,
+        innerStyle:'#cdeabc',
+        outerStyle:'#e1e1e1',
+        text:'nodejs'
+    })
+    l3_node_cirleText.addToGropOrLayer(groupL3)
+
+    var x3=outerRadius*Math.cos(30*Math.PI/180);
+    var y3=outerRadius*Math.sin(30*Math.PI/180);
+    var l4_js_cirleText=new CirleText({
+        x:x3,
+        y:y3,
+        innerRadius:30,
+        outerRadius:40,
+        innerStyle:'#abecdb',
+        outerStyle:'#e1e1e1',
+        text:'js'
+    })
+    l4_js_cirleText.addToGropOrLayer(groupL3)
+
+
+    animateLayer.draw();
+
+    var rotateAnglPerSecond=45;
+    var animate=new Konva.Animation(function(frame){
+        var rotateAngle=rotateAnglPerSecond* frame.timeDiff/1000;
+        groupL2.rotate(rotateAngle)
+        groupL2.getChildren().each(function(item,index){
+            item.rotate(-rotateAngle)
+        });
+        groupL3.rotate(-rotateAngle)
+        groupL3.getChildren().each(function(item,index){
+            item.rotate(rotateAngle)
+        })
+    },animateLayer);
+    animate.start();
+    animateLayer.on('mousemove',function(){
+        rotateAnglPerSecond=10;
+    })
+    animateLayer.on('mouseout',function(){
+        rotateAnglPerSecond=45;
+    })
+
+</script>
+</html>
