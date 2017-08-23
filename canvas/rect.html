@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Title</title>
+    <script src="konva.js"></script>
+</head>
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+</style>
+<body>
+<div id="con"></div>
+
+</body>
+<script>
+
+
+
+        var stage = new Konva.Stage({
+            container: 'con',
+            width: window.innerWidth,
+            height: window.innerHeight
+        });
+        var layer = new Konva.Layer();
+        stage.add(layer);
+
+        var x0 = 1 / 8 * stage.width();
+        var y0 = 3 / 4 * stage.height();
+
+        var width = 3 / 4 * stage.width();
+        var height = 1 / 2 * stage.height();
+
+
+        var baseLine = new Konva.Line({
+            points: [x0, y0, x0 + width, y0],
+            strokeWidth: 1,
+            width: 1,
+            stroke: 'lightgreen',
+        });
+        layer.add(baseLine);
+
+        var data = [
+            {name: '前端', value: '.8', color: 'green'},
+            {name: 'PHP', value: '.3', color: 'blue'},
+            {name: 'Java', value: '.7', color: 'red'},
+            {name: 'UI', value: '.9', color: 'orange'},
+            {name: 'IOS', value: '.4', color: 'purple'},
+            {name: 'Android', value: '.9', color: 'pink'}
+        ];
+        var recrWidth = width / data.length;
+
+        data.forEach(function (item, index) {
+            var rect = new Konva.Rect({
+                x: x0 + (1 / 4 + index) * recrWidth,
+                y: y0 - (item.value * height),
+                width: recrWidth / 2,
+                height: item.value * height,
+                fill: item.color,
+                cornerRadius: 5
+            });
+            layer.add(rect);
+
+            var textPercent = new Konva.Text({
+                x: x0 + index * recrWidth,
+                y: y0 - (item.value * height) - 14,
+                fontSize: 14,
+                width: recrWidth,
+                text: item.value * 100 + '%',
+                fill: item.color,
+                align: 'center',
+                name: 'textPercent'
+            })
+            layer.add(textPercent);
+
+            var textNameGroup = new Konva.Group({
+                x: x0 + (1 / 4 + index) * recrWidth,
+                y: y0,
+            })
+            var textName = new Konva.Text({
+                x: 0,
+                y: 0,
+                fontSize: 14,
+//            width:recrWidth,
+                fill: item.color,
+                text: item.name,
+//            align:'center',
+                rotation: 30
+
+            })
+            textNameGroup.add(textName)
+            layer.add(textNameGroup);
+        })
+
+
+        layer.draw();
+
+
+        stage.on('contentClick', function () {
+            //console.log(layer.find('Rect'))
+            layer.find('Rect').each(function (item, index) {
+                item.y(y0);
+                item.height(0);
+
+
+                item.to({
+                    duration: 1.3,
+                    y: y0 - data[index].value * height,
+                    height: data[index].value * height
+                })
+            });
+//        console.log(layer.find('.textPercent'))
+            layer.find('.textPercent').each(function (item, index) {
+                item.y(y0 - 14);
+//            item.text(0)
+//            item.height(0);
+
+//            var i=data[index].value*100;
+//            console.log(i)
+                item.to({
+                    duration: 1.3,
+                    y: y0 - data[index].value * height - 14,
+//                text:i
+//                text:data[index].value*100.replace(/\b(0+)/gi,"")
+                })
+            })
+        })
+
+    setTimeout(function(){
+        layer.find('Rect').each(function (item, index) {
+            item.y(y0);
+            item.height(0);
+
+
+            item.to({
+                duration: 1.3,
+                y: y0 - data[index].value * height,
+                height: data[index].value * height
+            })
+        });
+//        console.log(layer.find('.textPercent'))
+        layer.find('.textPercent').each(function (item, index) {
+            item.y(y0 - 14);
+//            item.text(0)
+//            item.height(0);
+
+//            var i=data[index].value*100;
+//            console.log(i)
+            item.to({
+                duration: 1.3,
+                y: y0 - data[index].value * height - 14,
+//                text:i
+//                text:data[index].value*100.replace(/\b(0+)/gi,"")
+            })
+        })
+    },1)
+
+
+</script>
+</html>
