@@ -140,7 +140,9 @@
 		  transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
 		}
 
-
+	    #container{
+			/*position: fixed;*/
+		}
 		.lightbox{
 			position: fixed;
 		    top: 0px;
@@ -153,12 +155,14 @@
 		    background-color: rgb(0, 0, 0);
 		}
 		.pop{
-			position: absolute;
+			position: fixed;
+			top: 0;
 		    left: 50%;
 			width: 894px;
 		    margin-left: -447px;
 		    z-index: 9;
 		}
+
 	</style>
 	<script src="./pdf.js"></script>
 	
@@ -215,14 +219,14 @@
 			        canvasContext: context,
 			        viewport: viewport
 			      };
-			     
 			      page.render(renderContext);
 			      loading.style.display='none';
 			      loading=null;
+			     
 
 			    });
 		  });
 		}
-		showPdf();
+		showPdf();	
 	</script>
 </html>
