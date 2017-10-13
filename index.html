@@ -215,9 +215,10 @@
 			        canvasContext: context,
 			        viewport: viewport
 			      };
+			     
+			      page.render(renderContext);
 			      loading.style.display='none';
 			      loading=null;
-			      page.render(renderContext);
 
 			    });
 		  });
