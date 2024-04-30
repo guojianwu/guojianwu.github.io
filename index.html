@@ -186,43 +186,43 @@
 	</div>
 </body>
 <script type="text/javascript">
-		var loading=document.getElementById('loading');
-		function showPdf(){
-			var container = document.getElementById("container");
-			container.style.display = "block";
-			var url = 'resume.pdf';
-			PDFJS.workerSrc = './pdf.worker.js';
-			PDFJS.getDocument(url).then(function getPdfHelloWorld(pdf) {
-			    //
-			    // Fetch the first page
-			    //
-			    pdf.getPage(1).then(function getPageHelloWorld(page) {
-			      var scale = 1.5;
-			      var viewport = page.getViewport(scale);
+		// var loading=document.getElementById('loading');
+		// function showPdf(){
+		// 	var container = document.getElementById("container");
+		// 	container.style.display = "block";
+		// 	var url = 'resume.pdf';
+		// 	PDFJS.workerSrc = './pdf.worker.js';
+		// 	PDFJS.getDocument(url).then(function getPdfHelloWorld(pdf) {
+		// 	    //
+		// 	    // Fetch the first page
+		// 	    //
+		// 	    pdf.getPage(1).then(function getPageHelloWorld(page) {
+		// 	      var scale = 1.5;
+		// 	      var viewport = page.getViewport(scale);
 
-			      //
-			      // Prepare canvas using PDF page dimensions
-			      //
-			      var canvas = document.getElementById('the-canvas');
-			      var context = canvas.getContext('2d');
-			      canvas.height = viewport.height;
-			      canvas.width = viewport.width;
+		// 	      //
+		// 	      // Prepare canvas using PDF page dimensions
+		// 	      //
+		// 	      var canvas = document.getElementById('the-canvas');
+		// 	      var context = canvas.getContext('2d');
+		// 	      canvas.height = viewport.height;
+		// 	      canvas.width = viewport.width;
 
-			      //
-			      // Render PDF page into canvas context
-			      //
-			      var renderContext = {
-			        canvasContext: context,
-			        viewport: viewport
-			      };
-			      page.render(renderContext);
-			      loading.style.display='none';
-			      loading=null;
+		// 	      //
+		// 	      // Render PDF page into canvas context
+		// 	      //
+		// 	      var renderContext = {
+		// 	        canvasContext: context,
+		// 	        viewport: viewport
+		// 	      };
+		// 	      page.render(renderContext);
+		// 	      loading.style.display='none';
+		// 	      loading=null;
 			     
 
-			    });
-		  });
-		}
+		// 	    });
+		//   });
+		// }
 		// showPdf();	
 	</script>
 </html>
